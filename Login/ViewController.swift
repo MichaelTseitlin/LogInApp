@@ -17,6 +17,11 @@ class ViewController: UIViewController {
     @IBOutlet var userNameTextField: UITextField!
     @IBOutlet var userPasswordTextField: UITextField!
     
+    override func viewDidLoad() {
+        userNameTextField.autocorrectionType = .no
+        userPasswordTextField.autocorrectionType = .no
+    }
+    
     @IBAction func loginAction(_ sender: UIButton) {
         answers = .correct
     }

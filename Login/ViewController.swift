@@ -12,12 +12,13 @@ class ViewController: UIViewController {
     
     let userName = "Michael Tseitlin"
     let password = "Password"
-    var answers = Answers.correct
+    var answers = Answers.uncorrect
     
     @IBOutlet var userNameTextField: UITextField!
     @IBOutlet var userPasswordTextField: UITextField!
-
+    
     @IBAction func loginAction(_ sender: UIButton) {
+        answers = .correct
     }
     
     @IBAction func forgotNameAction(_ sender: UIButton) {
@@ -28,9 +29,11 @@ class ViewController: UIViewController {
         answers = .forgotPassword
     }
     
-    @IBAction func unwind(segue: UIStoryboardSegue) {
-    }
-    
+    @IBAction func unwind(segue: UIStoryboardSegue) {}
+}
+
+// MARK: - Navigation
+extension ViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let destination = segue.destination as? SecondViewController {
@@ -55,3 +58,20 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - UI Text Field Delegate
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        performSegue(withIdentifier: "loginSegue", sender: Any?.self)
+        self.view.endEditing(true)
+        return false
+        
+    }
+}
+
+// MARK: - Hide the keyboard when we touch outside
+extension ViewController {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+}

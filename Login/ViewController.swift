@@ -10,13 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let userName = "Michael Tseitlin"
-    let password = "Password"
-    var answers = Answers.uncorrect
+    private let userName = "Michael Tseitlin"
+    private let password = "Password"
+    private var answers = Answers.uncorrect
     
     @IBOutlet var userNameTextField: UITextField!
     @IBOutlet var userPasswordTextField: UITextField!
-    
+        
     override func viewDidLoad() {
         userNameTextField.autocorrectionType = .no
         userPasswordTextField.autocorrectionType = .no

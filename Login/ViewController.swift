@@ -20,6 +20,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         userNameTextField.autocorrectionType = .no
         userPasswordTextField.autocorrectionType = .no
+        
+        addObservesForKeyboard()
     }
     
     @IBAction func loginAction(_ sender: UIButton) {
@@ -66,10 +68,15 @@ extension ViewController {
 // MARK: - UI Text Field Delegate
 extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        performSegue(withIdentifier: "loginSegue", sender: Any?.self)
-        self.view.endEditing(true)
-        return false
-        
+        if textField == userNameTextField {
+            userPasswordTextField.becomeFirstResponder()
+            return false
+        } else if textField == userPasswordTextField {
+            self.view.endEditing(true)
+                performSegue(withIdentifier: "loginSegue", sender: UIButton.self)
+            return true
+        }
+        return true
     }
 }
 
@@ -78,5 +85,28 @@ extension ViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
+    }
+}
+
+// MARK: - Solving the overlap problem with view
+extension ViewController {
+    private func addObservesForKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height / 2
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
 }

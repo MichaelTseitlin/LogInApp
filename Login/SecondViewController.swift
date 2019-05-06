@@ -10,7 +10,7 @@ import UIKit
 
 class SecondViewController: UIViewController {
 
-    private var message = ""
+    var message = ""
     
     @IBOutlet var mainMessage: UILabel!
     
